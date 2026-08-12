@@ -142,6 +142,12 @@ PROJECTS_PATH=/path/to/your/code
 - The API binds `0.0.0.0:8642` with a **local** terminal backend — firewall or bind to localhost if the host is exposed.
 - `API_SERVER_KEY` is required for the gateway; treat it like a password.
 
+## Examples
+
+| Example | Files |
+|---------|--------|
+| [AI sovereignty (management conference)](./examples/sovereign-ai/) | [`PROMPT.md`](./examples/sovereign-ai/PROMPT.md) · [`sovereign-ai.pptx`](./examples/sovereign-ai/sovereign-ai.pptx) |
+
 ## License notes
 
 - This recipe: provided as-is for self-hosting.

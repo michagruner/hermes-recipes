@@ -19,6 +19,10 @@ cp .env.example .env
 docker compose exec hermes hermes
 ```
 
+## Examples
+
+- [`hermes-pptx/examples/sovereign-ai/`](./hermes-pptx/examples/sovereign-ai/) — sample prompt + generated management deck on AI sovereignty
+
 ## Contributing
 
 - Never commit API keys, tokens, session DBs, or generated `.pptx` files.

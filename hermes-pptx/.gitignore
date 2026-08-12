@@ -25,5 +25,6 @@ projects/
 *.log
 open-webui-data/
 *.pptx
+!examples/**/*.pptx
 *.pdf
 slide-*.jpg
