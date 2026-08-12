@@ -1,0 +1,80 @@
+# Hermes PPTX stack — premium self-hosted PowerPoint generation
+#
+# Usage:
+#   cp .env.example .env   # add API keys
+#   ./scripts/fetch-deps.sh
+#   docker compose build
+#   docker compose up -d hermes
+#
+# Optional Open WebUI:
+#   docker compose --profile ui up -d
+
+name: hermes-pptx
+
+services:
+  hermes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hermes-pptx:local
+    container_name: hermes-pptx
+    restart: unless-stopped
+    ports:
+      - "${HERMES_API_PORT:-8642}:8642"
+      - "127.0.0.1:${HERMES_DASHBOARD_PORT:-9119}:9119"
+    volumes:
+      # Hermes home: config, memory, skills, sessions
+      - ./data:/opt/data
+      # Decks + working files (host-visible)
+      - ./workspace:/workspace
+      # Optional: mount a host projects tree (read-only)
+      - ${PROJECTS_PATH:-./projects}:/projects:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - .env
+    environment:
+      - HERMES_HOME=/opt/data
+      - HERMES_DATA_DIR=/opt/data
+      - HERMES_UID=${HERMES_UID:-1000}
+      - HERMES_GID=${HERMES_GID:-1000}
+      - API_SERVER_ENABLED=true
+      - API_SERVER_HOST=0.0.0.0
+      - API_SERVER_KEY=${API_SERVER_KEY}
+      - PATH=/opt/hermes/bin:/opt/hermes/.venv/bin:/opt/data/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - NODE_PATH=/opt/pptx-tools/node_modules
+    command: ["gateway", "run"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:8642/health || curl -sf http://127.0.0.1:8642/v1/models || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+
+  # Optional chat UI — enable with: docker compose --profile ui up -d
+  open-webui:
+    profiles: ["ui"]
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: hermes-pptx-webui
+    restart: unless-stopped
+    depends_on:
+      - hermes
+    ports:
+      - "${OPEN_WEBUI_PORT:-3080}:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+    environment:
+      - OPENAI_API_BASE_URL=http://hermes:8642/v1
+      - OPENAI_API_KEY=${API_SERVER_KEY}
+      - WEBUI_NAME=Hermes PPTX
+      - DEFAULT_MODELS=hermes
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+volumes:
+  open-webui-data:
