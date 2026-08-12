@@ -1,12 +1,12 @@
 # Hermes Recipes
 
-Reusable, **secrets-free** Docker recipes for [Nous Hermes Agent](https://hermes-agent.nousresearch.com/).
+Reusable, **secrets-free**, **OSS-oriented** Docker recipes for [Nous Hermes Agent](https://hermes-agent.nousresearch.com/).
 
 ## Recipes
 
 | Recipe | Description |
 |--------|-------------|
-| [`hermes-pptx/`](./hermes-pptx/) | Premium self-hosted PowerPoint generation (LibreOffice visual QA, pptxgenjs, OfficeCLI, Anthropic pptx skill, deck-master orchestrator) |
+| [`hermes-pptx/`](./hermes-pptx/) | Premium self-hosted PowerPoint — **OSS only** (pptxgenjs, OfficeCLI, LibreOffice QA, consulting-pptx skill). No Anthropic proprietary document skills. |
 
 ## Quick start (PPTX)
 
@@ -21,10 +21,11 @@ docker compose exec hermes hermes
 
 ## Examples
 
-- [`hermes-pptx/examples/sovereign-ai/`](./hermes-pptx/examples/sovereign-ai/) — sample prompt + generated management deck on AI sovereignty
+- [`hermes-pptx/examples/sovereign-ai/`](./hermes-pptx/examples/sovereign-ai/) — sample prompt + deck on AI sovereignty
 
 ## Contributing
 
-- Never commit API keys, tokens, session DBs, or generated `.pptx` files.
-- Prefer downloading third-party binaries/skills at bootstrap/build time.
+- Never commit API keys, tokens, session DBs.
+- Prefer downloading third-party binaries at bootstrap/build time.
+- Do **not** vendor Anthropic proprietary skills.
 - Keep host-specific paths out of compose files (use env vars).

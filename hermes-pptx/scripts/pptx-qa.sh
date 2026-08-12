@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Full QA helper: validate + render slide previews.
+# Full QA helper: validate + render slide previews (OSS).
 # Usage: pptx-qa <deck.pptx> [work_dir]
 set -euo pipefail
 
@@ -13,25 +13,18 @@ WORK_ROOT="${2:-$(dirname "$DECK")/$(basename "$DECK" .pptx)-qa}"
 SLIDES="$WORK_ROOT/slides"
 mkdir -p "$SLIDES"
 
-PY="${HERMES_PYTHON:-/opt/hermes/.venv/bin/python}"
-if [[ ! -x "$PY" ]]; then
-  PY="$(command -v python3 || command -v python)"
-fi
-
-echo "== validate (python) =="
-VALIDATE_PY="/opt/data/skills/document/pptx/scripts/office/validate.py"
-if [[ ! -f "$VALIDATE_PY" ]]; then
-  VALIDATE_PY="/opt/hermes-pptx/skills/pptx/scripts/office/validate.py"
-fi
-if [[ -f "$VALIDATE_PY" ]]; then
-  "$PY" "$VALIDATE_PY" "$DECK" || true
+echo "== validate =="
+if command -v pptx-validate >/dev/null 2>&1; then
+  pptx-validate "$DECK" || true
 else
-  echo "(validate.py not found — skip)"
+  PY="${HERMES_PYTHON:-/opt/hermes/.venv/bin/python}"
+  SCRIPT="/opt/data/skills/productivity/consulting-pptx/scripts/validate_pptx.py"
+  [[ -f "$SCRIPT" ]] && "$PY" "$SCRIPT" "$DECK" || true
 fi
 
 if command -v officecli >/dev/null 2>&1; then
   echo "== validate (officecli) =="
-  officecli validate "$DECK" --json 2>/dev/null || officecli help validate 2>/dev/null | head -20 || true
+  officecli validate "$DECK" --json 2>/dev/null || true
 fi
 
 echo "== content extract =="

@@ -1,10 +1,13 @@
 name: decks
-description: Premium PowerPoint — design rules + OfficeCLI + orchestrated QA pipeline
+description: "OSS premium PowerPoint — consulting design + OfficeCLI + visual QA (no proprietary skills)"
 skills:
   - deck-master
-  - pptx
+  - consulting-pptx
   - officecli
 instruction: |
-  You are producing a top-tier slide deck on this preconfigured host.
-  Follow deck-master workflow end-to-end: narrative → pptxgenjs → validate → pptx-qa → vision fix loop.
+  You are producing a top-tier slide deck using ONLY open-source tooling.
+  Do NOT use Anthropic document skills.
+  Follow deck-master + consulting-pptx end-to-end:
+  narrative → pptxgenjs → pptx-validate → pptx-qa → vision fix loop.
   Output under /workspace/decks/. Prefer fewer excellent slides.
+  Visual bar: McKinsey / BCG style for management audiences.

@@ -1,7 +1,5 @@
 # Hermes config — PPTX production stack
 # https://hermes-agent.nousresearch.com/docs/user-guide/configuration
-#
-# Put secrets in .env / data/.env — never in this file.
 
 database:
   journal_mode: "wal"
@@ -10,10 +8,8 @@ runtime:
   nofile_soft_limit: 4096
 
 model:
-  # Default: DeepSeek V4 Flash (fast/cheap).
-  # Premium decks via OpenRouter:
+  # Default: DeepSeek V4 Flash (fast/cheap). OpenRouter still available:
   #   /model openrouter:anthropic/claude-opus-4.6
-  # Stronger DeepSeek:
   #   /model deepseek:deepseek-v4-pro
   default: "deepseek-v4-flash"
   provider: "deepseek"

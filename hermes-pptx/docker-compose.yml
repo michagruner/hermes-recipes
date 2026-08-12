@@ -2,12 +2,14 @@
 #
 # Usage:
 #   cp .env.example .env   # add API keys
-#   ./scripts/fetch-deps.sh
 #   docker compose build
-#   docker compose up -d hermes
+#   docker compose up -d
+#   docker compose logs -f hermes
 #
-# Optional Open WebUI:
-#   docker compose --profile ui up -d
+# Chat UIs:
+#   - Open WebUI:  http://localhost:3080  (OpenAI base http://hermes:8642/v1)
+#   - API:         http://localhost:8642/v1
+#   - Dashboard:   http://127.0.0.1:9119  (optional profile)
 
 name: hermes-pptx
 
@@ -19,16 +21,18 @@ services:
     image: hermes-pptx:local
     container_name: hermes-pptx
     restart: unless-stopped
+    # Official Hermes docker uses host networking in some templates;
+    # bridge + explicit ports is cleaner alongside other stacks.
     ports:
-      - "${HERMES_API_PORT:-8642}:8642"
-      - "127.0.0.1:${HERMES_DASHBOARD_PORT:-9119}:9119"
+      - "8642:8642"
+      - "127.0.0.1:9119:9119"
     volumes:
       # Hermes home: config, memory, skills, sessions
       - ./data:/opt/data
       # Decks + working files (host-visible)
       - ./workspace:/workspace
-      # Optional: mount a host projects tree (read-only)
-      - ${PROJECTS_PATH:-./projects}:/projects:ro
+      # Optional: read project sources for "slides from repo" tasks
+      - /home/mgruner/projects:/projects:ro
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
@@ -40,6 +44,7 @@ services:
       - API_SERVER_ENABLED=true
       - API_SERVER_HOST=0.0.0.0
       - API_SERVER_KEY=${API_SERVER_KEY}
+      # Ensure wrappers + officecli + pptxgenjs are visible
       - PATH=/opt/hermes/bin:/opt/hermes/.venv/bin:/opt/data/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - NODE_PATH=/opt/pptx-tools/node_modules
     command: ["gateway", "run"]
@@ -63,7 +68,7 @@ services:
     depends_on:
       - hermes
     ports:
-      - "${OPEN_WEBUI_PORT:-3080}:8080"
+      - "3080:8080"
     volumes:
       - open-webui-data:/app/backend/data
     environment:

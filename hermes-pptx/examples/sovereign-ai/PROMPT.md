@@ -1,6 +1,7 @@
 # Sample prompt — Sovereignty with AI usage
 
-Used to generate [`sovereign-ai.pptx`](./sovereign-ai.pptx) via Hermes + `/decks`.
+Used to generate [`sovereign-ai.pptx`](./sovereign-ai.pptx) via Hermes + `/decks`
+(OSS stack: consulting-pptx + OfficeCLI + pptxgenjs — no Anthropic proprietary skills).
 
 ## Prompt
 

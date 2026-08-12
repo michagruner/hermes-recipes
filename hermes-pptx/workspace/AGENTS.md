@@ -1,10 +1,12 @@
-# Workspace context — hermes-pptx
+# Workspace context — hermes-pptx (OSS)
 
 ## Paths
-- Write finished decks to `/workspace/decks/<slug>.pptx`
-- Scratch/build scripts under `/workspace/tmp/<slug>/`
-- Optional host projects (read-only): `/projects/`
-- Skills on disk: `/opt/data/skills/` (pptx, officecli, deck-master)
+- Finished decks: `/workspace/decks/<slug>.pptx`
+- Scratch: `/workspace/tmp/<slug>/`
+- Optional host projects: `/projects/`
+- Skills: `/opt/data/skills/` — **consulting-pptx**, **deck-master**, **officecli** only for decks
 
-## Required quality bar
-Use `/deck-master` for any presentation request. Always run visual QA (`pptx-qa`) before declaring done.
+## Rules
+- OSS components only for slide generation (no Anthropic document skills).
+- Use `/deck-master` or `/decks` for presentation requests.
+- Always run `pptx-qa` before declaring done.
