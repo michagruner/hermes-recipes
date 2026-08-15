@@ -33,6 +33,8 @@ Run full visual QA.
 
 Dual-audience + project-plan: use `examples/local-inference-stack/` (locked `BRIEF.md` + `PROMPT.md`). Prefer `grok-4.6` at **medium** reasoning. Generate incrementally (≤4 slides per write). Do not one-shot a 16-slide `build.js`.
 
+Visuals: **diagram first** (pptxgenjs shapes + short labels). Image model at most once (unlabeled cover hero) if asked. Do not illustrate every slide. Optional skill: `deck-art` (not preloaded by `/decks`).
+
 Outputs: `workspace/decks/`
 
 ## Access

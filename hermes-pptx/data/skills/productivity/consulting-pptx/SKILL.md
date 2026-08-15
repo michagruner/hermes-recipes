@@ -1,7 +1,7 @@
 ---
 name: consulting-pptx
 description: "OSS-only McKinsey/BCG-style PowerPoint generation with pptxgenjs, OfficeCLI, and LibreOffice visual QA. Use for decks, pitches, board updates, conference talks, and executive presentations. No proprietary Anthropic skills."
-version: 2.1.0
+version: 2.2.0
 license: MIT
 metadata:
   hermes:
@@ -87,6 +87,9 @@ Audience, decision to drive, slide count, tone, brand colors (or pick a palette)
 - Accent `#B45309` · Secondary `#0F766E`
 
 **Rules that kill "AI slop":**
+- **Diagram first.** Relationships, sequences, UIs, and plans are pptxgenjs shapes + 3–6 words. See `references/visuals.md`.
+- An image model is optional and rare: at most **one** unlabeled hero if the brief asks for atmosphere or a real object. Never illustrate every slide. Never put required words in pixels.
+- Fail vision QA if you cannot say the title from the picture alone — then delete the image and draw a diagram.
 - No teal/purple gradient wallpaper
 - No decorative vertical accent bar as a default crutch on every slide
 - No giant empty cards with one metric and a vague subtitle
@@ -139,7 +142,7 @@ pptx.title = "Deck title";
 pptx.writeFile({ fileName: "/workspace/decks/<slug>.pptx" });
 ```
 
-See `references/pptxgenjs-cheatsheet.md`. Host quirks: `oss-pptx-toolchain`.
+See `references/pptxgenjs-cheatsheet.md` and `references/visuals.md`. Host quirks: `oss-pptx-toolchain`.
 
 ### 5. Validate
 
@@ -163,6 +166,8 @@ Open each `slide-*.jpg` with the **vision** tool. Fail if any of:
 - Uneven gaps / misaligned columns
 - Sparse "filler" slides
 - Too much whitespace with no hierarchy
+- A generated picture whose meaning is not the title (decode-the-metaphor slides)
+- Any required words living inside a generated image
 
 Fix in `build.js` (preferred) or `officecli set`, re-render, re-check.
 

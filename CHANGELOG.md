@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0] — 2026-08-15
+
+Diagram-first visuals so `/decks` does not illustrate every slide with an image model.
+
+### Added
+- `consulting-pptx/references/visuals.md` — when to draw vs when to generate
+- Optional `deck-art` skill: at most one unlabeled hero; not in the `/decks` bundle
+
+### Changed
+- Default visual is a labeled pptxgenjs diagram (relationships, sequences, UIs, plans)
+- Image model only if the user asked for atmosphere or a real object, and the title still stands if the picture is covered
+- Vision QA fails if required words live in pixels or the picture is not the title
+- `/decks` instruction, SOUL, AGENTS, deck-master updated to match
+
 ## [0.2.0] — 2026-08-15
 
 Dual-audience decks, a real project-plan layout, and the Hermes/Grok reliability fixes that stopped 16-slide jobs from dying mid-think.

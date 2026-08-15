@@ -16,3 +16,4 @@
 - Terminal: one command per call. Do not use `&&`.
 - Locked briefs live under `/workspace/briefs/<slug>/`.
 - Do not preload the full officecli skill. Call `officecli` on PATH if needed.
+- Visuals: labeled pptxgenjs diagrams by default. Image model at most once (unlabeled hero) if the user asked. Never put required words in generated pixels. See consulting-pptx `references/visuals.md`.

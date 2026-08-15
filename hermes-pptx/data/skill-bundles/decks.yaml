@@ -24,3 +24,6 @@ instruction: |
   Dual audience (technical + technical senior management): 12–16 slides,
   two-act spine, dense tables allowed, project plan is a first-class slide.
   Visual bar: McKinsey / BCG. Action titles.
+  Diagrams first (shapes + short labels). Do not call an image model per slide.
+  At most one unlabeled hero if the user asked for atmosphere; title must stand
+  if the picture is covered. Required words live in pptxgenjs, never in pixels.

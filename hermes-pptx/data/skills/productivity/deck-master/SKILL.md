@@ -1,7 +1,7 @@
 ---
 name: deck-master
 description: "Top-quality OSS PowerPoint production pipeline. Use whenever the user wants slides, a deck, a pitch, a presentation, or a .pptx. Orchestrates consulting-pptx design rules, pptxgenjs, OfficeCLI, and LibreOffice visual QA. No proprietary skills."
-version: 2.1.0
+version: 2.2.0
 license: MIT
 metadata:
   hermes:
@@ -53,3 +53,5 @@ McKinsey/BCG-like craft: intentional color, hierarchy, native charts, no AI-temp
 Fewer excellent slides beat many mediocre ones.
 Dual-audience + project-plan decks may run 12–16 slides (decision act + technical appendix).
 Never invent figures that are not in the brief.
+
+**Visuals:** labeled pptxgenjs diagrams by default. An image model is optional and at most one unlabeled hero if the user asked for atmosphere. Follow `consulting-pptx/references/visuals.md`. Do not illustrate every slide.
