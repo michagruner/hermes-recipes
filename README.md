@@ -21,7 +21,10 @@ docker compose exec hermes hermes
 
 ## Examples
 
-- [`hermes-pptx/examples/sovereign-ai/`](./hermes-pptx/examples/sovereign-ai/) — sample prompt + deck on AI sovereignty
+- [`hermes-pptx/examples/sovereign-ai/`](./hermes-pptx/examples/sovereign-ai/) — 8-slide management deck on AI sovereignty
+- [`hermes-pptx/examples/local-inference-stack/`](./hermes-pptx/examples/local-inference-stack/) — 16-slide dual-audience deck + phase-gate plan
+
+Latest release: [v0.2.0](https://github.com/michagruner/hermes-recipes/releases/tag/v0.2.0)
 
 ## Contributing
 

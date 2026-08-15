@@ -32,7 +32,7 @@ services:
       # Decks + working files (host-visible)
       - ./workspace:/workspace
       # Optional: read project sources for "slides from repo" tasks
-      - /home/mgruner/projects:/projects:ro
+      - ${PROJECTS_PATH:-./workspace}:/projects:ro
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
@@ -47,6 +47,12 @@ services:
       # Ensure wrappers + officecli + pptxgenjs are visible
       - PATH=/opt/hermes/bin:/opt/hermes/.venv/bin:/opt/data/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - NODE_PATH=/opt/pptx-tools/node_modules
+      # write_file must reach the deck workdir. Hermes image default is /opt/data
+      # only — that made reasoning models claim they had no filesystem.
+      - HERMES_WRITE_SAFE_ROOT=/opt/data:/workspace
+      # grok-4.6 is not in Hermes's built-in reasoning-timeout floor (only 4.5).
+      - HERMES_API_CALL_STALE_TIMEOUT=900
+      - HERMES_STREAM_STALE_TIMEOUT=600
     command: ["gateway", "run"]
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://127.0.0.1:8642/health || curl -sf http://127.0.0.1:8642/v1/models || exit 0"]

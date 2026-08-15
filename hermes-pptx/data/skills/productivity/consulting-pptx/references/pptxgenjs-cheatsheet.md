@@ -38,19 +38,18 @@ await pptx.writeFile({ fileName: "/workspace/decks/out.pptx" });
 ## Chart
 
 ```js
-s.addChart(pptx.charts.BAR, {
-  x: 0.6, y: 1.3, w: 7.5, h: 5.2,
-  barGrouping: "clustered",
-  showTitle: false,
-  showLegend: true,
-  legendPos: "b",
-  chartColors: ["2563EB", "64748B"],
-  categories: ["Q1", "Q2", "Q3", "Q4"],
-  series: [
-    { name: "On-prem", values: [12, 18, 27, 41] },
-    { name: "Hyperscaler", values: [40, 38, 33, 28] },
-  ],
-});
+// pptxgenjs 3.12 LEGACY signature. The v4 {categories, series} object crashes.
+  s.addChart(pptx.charts.BAR, [
+    { name: "On-prem", labels: ["Q1", "Q2", "Q3", "Q4"], values: [12, 18, 27, 41] },
+    { name: "Hyperscaler", labels: ["Q1", "Q2", "Q3", "Q4"], values: [40, 38, 33, 28] },
+  ], {
+    x: 0.6, y: 1.3, w: 7.5, h: 5.2,
+    barGrouping: "clustered",
+    showTitle: false,
+    showLegend: true,
+    legendPos: "b",
+    chartColors: ["2563EB", "64748B"],
+  });
 ```
 
 ## Table
@@ -75,6 +74,40 @@ s.addTable(
     color: "0B1220",
   }
 );
+```
+
+## Phase-gate grid (project plan)
+
+```js
+s.addTable(
+  [
+    [
+      { text: "Workstream", options: { bold: true, fill: { color: "0B1220" }, color: "FFFFFF" } },
+      { text: "Phase 0 — prove", options: { bold: true, fill: { color: "0B1220" }, color: "FFFFFF" } },
+      { text: "Phase 1 — first node", options: { bold: true, fill: { color: "0B1220" }, color: "FFFFFF" } },
+      { text: "Phase 2 — gated", options: { bold: true, fill: { color: "0B1220" }, color: "FFFFFF" } },
+    ],
+    [
+      { text: "Gateway", options: { bold: true } },
+      { text: "LiteLLM live\nExit: SSO + quotas", options: { fontSize: 11, color: "334155" } },
+      { text: "On-prem alias\nExit: overflow 429", options: { fontSize: 11, color: "334155" } },
+      { text: "P/D split TBD", options: { fontSize: 11, color: "64748B" } },
+    ],
+  ],
+  {
+    x: 0.5, y: 1.25, w: 12.3, h: 4.8,
+    colW: [2.1, 3.4, 3.4, 3.4],
+    border: [{ pt: 0.5, color: "CBD5E1" }],
+    fontFace: "Arial",
+    fontSize: 12,
+    color: "0B1220",
+    valign: "top",
+  }
+);
+s.addText("Kill criteria: utilization <40% · bake-off loss · legal no-go", {
+  x: 0.5, y: 6.85, w: 12.3, h: 0.28,
+  fontSize: 11, color: "64748B", fontFace: "Arial", margin: 0,
+});
 ```
 
 ## Card row

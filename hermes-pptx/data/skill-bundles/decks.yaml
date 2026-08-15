@@ -1,13 +1,26 @@
 name: decks
-description: "OSS premium PowerPoint — consulting design + OfficeCLI + visual QA (no proprietary skills)"
+description: "OSS premium PowerPoint — consulting design + visual QA (no proprietary skills)"
 skills:
   - deck-master
   - consulting-pptx
-  - officecli
 instruction: |
   You are producing a top-tier slide deck using ONLY open-source tooling.
   Do NOT use Anthropic document skills.
-  Follow deck-master + consulting-pptx end-to-end:
-  narrative → pptxgenjs → pptx-validate → pptx-qa → vision fix loop.
-  Output under /workspace/decks/. Prefer fewer excellent slides.
-  Visual bar: McKinsey / BCG style for management audiences.
+  Do NOT load the full officecli skill (Word/Excel/Morph). The officecli
+  binary is on PATH for validate/screenshot only.
+  Do NOT load the python-pptx "powerpoint" skill.
+
+  Follow deck-master + consulting-pptx:
+  narrative → incremental build.js → node (own call) → pptx-validate → pptx-qa.
+
+  Generation rules (non-negotiable — this is how Grok/Hermes fail):
+  - You CAN write files. write_file works on /workspace and /opt/data.
+  - Never one-shot a 12–16 slide build.js. Scaffold first, then ≤4 slides per write.
+  - Never chain terminal commands with &&.
+  - Never claim done unless ls shows the .pptx.
+  - If a BRIEF.md is present, do not ask questions; never invent numbers.
+
+  Default: fewer excellent slides for a single exec audience.
+  Dual audience (technical + technical senior management): 12–16 slides,
+  two-act spine, dense tables allowed, project plan is a first-class slide.
+  Visual bar: McKinsey / BCG. Action titles.

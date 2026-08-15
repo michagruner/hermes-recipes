@@ -1,7 +1,7 @@
 ---
 name: consulting-pptx
 description: "OSS-only McKinsey/BCG-style PowerPoint generation with pptxgenjs, OfficeCLI, and LibreOffice visual QA. Use for decks, pitches, board updates, conference talks, and executive presentations. No proprietary Anthropic skills."
-version: 2.0.0
+version: 2.1.0
 license: MIT
 metadata:
   hermes:
@@ -47,7 +47,14 @@ Audience, decision to drive, slide count, tone, brand colors (or pick a palette)
 - **Action titles** only (insight or recommendation — never "Overview", "Agenda", "Summary" alone).
 - One idea per slide.
 - Pyramid: situation → complication → resolution; or SCR / MECE storyline.
-- Prefer **fewer excellent slides**.
+- Prefer **fewer excellent slides**. Dual-audience + project-plan decks: **12–16 slides**, two acts.
+
+**Dual-audience (tech + technical senior management):**
+- One deck, two acts. Act 1 must stand alone as a decision memo.
+- Every Act-1 title must be readable by a VP; the body may be dense.
+- Tag footer left: “Decision” or “Deep dive” — do not mix acts on one slide.
+- Do not split into two files unless the user asks.
+- If a `BRIEF.md` is in the request, do not ask questions; quote numbers from it or write TBD.
 
 ### 3. Design system
 
@@ -83,7 +90,7 @@ Audience, decision to drive, slide count, tone, brand colors (or pick a palette)
 - No teal/purple gradient wallpaper
 - No decorative vertical accent bar as a default crutch on every slide
 - No giant empty cards with one metric and a vague subtitle
-- No walls of 8+ bullets; max ~5 bullets or switch to diagram/table
+- No walls of 8+ prose bullets. Comparison tables (5–7 rows) and phase grids are allowed and preferred for hardware, model-fit, and governance slides.
 - High contrast only (dark on light or light on dark — never gray-on-gray)
 - Align columns to a shared grid across the deck
 - Sources and footnotes bottom-left or bottom-right, 10–11pt muted
@@ -97,10 +104,25 @@ Audience, decision to drive, slide count, tone, brand colors (or pick a palette)
 6. **Big number row** — 3–4 KPIs with labels + delta
 7. **Comparison table** — before/after or build/buy/partner
 8. **Closing** — recommendation + next 30/60/90 days
+9. **Phase-gate plan** — 3 columns (phases) × 4–6 workstream rows; exit criteria in the cell, not the title
+10. **Decision tree** — 3–4 binary nodes (SKU / model / buy-vs-colo), one recommended path highlighted
+11. **Stack swimlane** — 4–5 horizontal layers (apps → gateway → router → engines → GPU pools)
+12. **RACI strip** — workstream × R/A/C/I, 10–11pt, only on the plan or BOM slide
 
-### 4. Generate with pptxgenjs
+### 4. Generate with pptxgenjs — incrementally
 
-Write `/workspace/tmp/<slug>/build.js`:
+**You can write files.** `write_file` is allowed under `/workspace` and `/opt/data`.
+Never say you lack a filesystem. Never compose a 12–16 slide `build.js` in one turn
+(that is how Grok 4.6 times out: long think, no tool call, xAI drops the stream).
+
+**Do not load** the full `officecli` skill or the `powerpoint` (python-pptx) skill.
+
+**Turn plan:**
+1. `terminal`: `mkdir -p /workspace/tmp/<slug> /workspace/decks`  (no `&&`)
+2. `write_file` `/workspace/tmp/<slug>/build.js` — helpers + cover only
+3. `write_file` or `patch` — add at most **4 slides** per turn
+4. `terminal`: `node /workspace/tmp/<slug>/build.js`  (own call, `NODE_PATH` already set)
+5. Validate, then next batch
 
 ```javascript
 const PptxGenJS = require("pptxgenjs");
@@ -110,17 +132,14 @@ pptx.layout = "WIDE";
 pptx.author = "Hermes PPTX (OSS)";
 pptx.title = "Deck title";
 
-// prefer native charts:
-// s.addChart(pptx.charts.BAR, { ... })
-// shapes: pptx.shapes.RECTANGLE, ROUNDED_RECTANGLE, LINE, OVAL
-// icons: simple geometric marks or unicode — avoid external paid icon packs
+// Charts are the 3.12 LEGACY signature — array of {name, labels, values}.
+// The v4 {categories, series} object CRASHES (tmpData.forEach).
+// s.addChart(pptx.charts.BAR, [{ name: "A", labels: ["Q1"], values: [1] }], { x: 0.6, y: 1.3, w: 7.5, h: 4 });
 
 pptx.writeFile({ fileName: "/workspace/decks/<slug>.pptx" });
 ```
 
-Run: `cd /workspace/tmp/<slug> && node build.js`
-
-See `references/pptxgenjs-cheatsheet.md` for chart/table snippets.
+See `references/pptxgenjs-cheatsheet.md`. Host quirks: `oss-pptx-toolchain`.
 
 ### 5. Validate
 

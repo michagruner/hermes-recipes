@@ -10,7 +10,8 @@ ARG TARGETARCH=amd64
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PLAYWRIGHT_BROWSERS_PATH=/opt/hermes/.playwright \
-    NODE_PATH=/opt/pptx-tools/node_modules
+    NODE_PATH=/opt/pptx-tools/node_modules \
+    HERMES_WRITE_SAFE_ROOT=/opt/data:/workspace
 
 RUN apt-get -o Acquire::Retries=3 update \
  && apt-get -o Acquire::Retries=3 install -y --no-install-recommends \
@@ -75,6 +76,7 @@ RUN chmod 755 /usr/local/bin/pptx-render /usr/local/bin/pptx-qa /usr/local/bin/p
 # Bake OSS skills into image (also mounted live from ./data)
 COPY data/skills/productivity/deck-master /opt/hermes-pptx/skills/deck-master
 COPY data/skills/productivity/consulting-pptx /opt/hermes-pptx/skills/consulting-pptx
+COPY data/skills/productivity/oss-pptx-toolchain /opt/hermes-pptx/skills/oss-pptx-toolchain
 COPY data/skills/office/officecli /opt/hermes-pptx/skills/officecli
 
 WORKDIR /opt/hermes

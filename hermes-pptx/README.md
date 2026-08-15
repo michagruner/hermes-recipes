@@ -31,7 +31,9 @@ McKinsey/BCG visual bar. Native charts. Output /workspace/decks/board.pptx
 Run full visual QA.
 ```
 
-Outputs: `~/hermes-pptx/workspace/decks/`
+Dual-audience + project-plan: use `examples/local-inference-stack/` (locked `BRIEF.md` + `PROMPT.md`). Prefer `grok-4.6` at **medium** reasoning. Generate incrementally (≤4 slides per write). Do not one-shot a 16-slide `build.js`.
+
+Outputs: `workspace/decks/`
 
 ## Access
 
@@ -46,7 +48,7 @@ Outputs: `~/hermes-pptx/workspace/decks/`
 
 | Command | Effect |
 |---------|--------|
-| `/decks` | deck-master + consulting-pptx + officecli |
+| `/decks` | deck-master + consulting-pptx (officecli is CLI-only; do not preload the skill) |
 | `/consulting-pptx` | Design system + generation rules |
 | `/deck-master` | Orchestrator |
 | `/officecli` | DOM ops |

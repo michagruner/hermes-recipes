@@ -1,7 +1,7 @@
 ---
 name: deck-master
 description: "Top-quality OSS PowerPoint production pipeline. Use whenever the user wants slides, a deck, a pitch, a presentation, or a .pptx. Orchestrates consulting-pptx design rules, pptxgenjs, OfficeCLI, and LibreOffice visual QA. No proprietary skills."
-version: 2.0.0
+version: 2.1.0
 license: MIT
 metadata:
   hermes:
@@ -40,12 +40,16 @@ Skill paths:
 
 ## Workflow
 1. Load **consulting-pptx** design rules (read SKILL.md if not already in context).
-2. Outline with **action titles**.
-3. Generate via pptxgenjs (`build.js`).
-4. `pptx-validate` + `officecli validate`.
-5. `pptx-qa` → vision-inspect every slide → fix → re-render until clean.
-6. Deliver path + brief storyline.
+2. Outline with **action titles** (short). Do not narrate the finished deck.
+3. Generate via pptxgenjs **incrementally**: scaffold + ≤4 slides per `write_file`.
+   You can write `/workspace/...`. Never one-shot 12–16 slides. No `&&` in terminal.
+4. `terminal`: `node /workspace/tmp/<slug>/build.js` as its own call.
+5. `pptx-validate`. `officecli validate` is optional CLI — do **not** load the officecli skill.
+6. `pptx-qa` → vision-inspect every slide → fix → re-render until clean.
+7. Deliver path + brief storyline. Do not claim done unless `ls` shows the `.pptx`.
 
 ## Quality bar
 McKinsey/BCG-like craft: intentional color, hierarchy, native charts, no AI-template look.
 Fewer excellent slides beat many mediocre ones.
+Dual-audience + project-plan decks may run 12–16 slides (decision act + technical appendix).
+Never invent figures that are not in the brief.

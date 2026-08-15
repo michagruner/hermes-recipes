@@ -27,3 +27,28 @@ skills:
 
 memory:
   write_approval: false
+
+# grok-4.6 is a reasoning model but is not in Hermes's built-in floor list
+# (only grok-4.5 / grok-4.20-reasoning). Without this, the 90s non-stream
+# stale detector kills long deck-generation turns with Broken pipe.
+providers:
+  xai-oauth:
+    models:
+      grok-4.6:
+        stale_timeout_seconds: 900
+        timeout_seconds: 1800
+
+agent:
+  # High reasoning + a 16-slide one-shot JS file = think-phase longer than
+  # xAI's idle window. Medium still reasons; it starts tools.
+  reasoning_overrides:
+    grok-4.6: medium
+  environment_hint: |
+    You have write_file and terminal. write_file MAY write under /workspace and /opt/data.
+    Never say you cannot write files. Never emit a 12–16 slide build.js in one turn.
+    Write the scaffold, then at most 4 slides per write_file/patch. Run node as its own
+    terminal call — do not chain with && (Hermes treats " && " as backgrounding).
+    Do not claim a deck is done unless ls shows /workspace/decks/<slug>.pptx.
+  coding_instructions:
+    - "Decks: incremental write_file of build.js (≤4 slides/turn). No && in terminal."
+    - "Do not load the full officecli skill unless you are doing DOM edits."
